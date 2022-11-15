@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount, useSigner, useContract } from "wagmi";
+import { Relayer } from "defender-relay-client";
 
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from "./contract/contractDetails";
 
@@ -29,6 +30,29 @@ function App() {
 		setLoading(false);
 	};
 
+	const mintDef = async () => {
+		const relayer = new Relayer({
+			apiKey: "8YfVM6sd95NNsD4cpQKESFQfG15Aws2Y",
+			apiSecret:
+				"3upJ9MsGEv9gHitxFdsNC3je9irmZuemVcTELeBsnuC1daAy6dXn9KuX7uor3sif",
+		});
+
+		const { data } = await contract.populateTransaction.safeMint(address);
+		const tx = await relayer.sendTransaction({
+			from: address,
+			to: CONTRACT_ADDRESS,
+			data: data,
+			speed: "fast",
+		});
+		try {
+			await tx.wait()
+			console.log("WAIT ", tx)
+		} catch(err) {
+			console.log(err)
+		}
+		console.log("TXN ", tx)
+	};
+
 	return (
 		<div className="flex items-center justify-center min-h-screen bg-black text-white">
 			<div className="flex flex-col items-center justify-center gap-4">
@@ -39,7 +63,7 @@ function App() {
 				) : (
 					address && (
 						<button
-							onClick={mintNft}
+							onClick={mintDef}
 							className="my-4 px-8 py-2.5 rounded-xl bg-white text-black font-bold transform hover:scale-105"
 						>
 							Mint
