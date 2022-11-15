@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
+import { Biconomy } from '@biconomy/mexa'
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useAccount, useSigner, useContract } from "wagmi";
 import { ethers } from "ethers";
-import { Biconomy } from "@biconomy/mexa";
+import { useAccount } from "wagmi";
 
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from "./contract/contractDetails";
 
 function App() {
-	const [biconomy, setBiconomy] = useState(null);
+	const [biconomy, setBiconomy] = useState(null)
 	const [loading, setLoading] = useState(false);
 	const [token, setToken] = useState(null);
 
