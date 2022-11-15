@@ -13,8 +13,8 @@ function App() {
 
 	const { address } = useAccount();
 
-	const initBiconomy = async (ethereum) => {
-		const biconomy = new Biconomy(ethereum, {
+	const initBiconomy = async (provider) => {
+		const biconomy = new Biconomy(provider, {
 			apiKey: process.env.REACT_APP_BICONOMY_API_KEY,
 			debug: true,
 			contractAddresses: [CONTRACT_ADDRESS],
@@ -28,7 +28,7 @@ function App() {
 		if (ethereum) {
 			initBiconomy(ethereum);
 		}
-	}, []);
+	}, [address]);
 
 	// console.log("BICONOMY ", biconomy);
 
