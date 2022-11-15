@@ -9,16 +9,9 @@ import { CONTRACT_ADDRESS, CONTRACT_ABI } from "./contract/contractDetails";
 function App() {
 	const [biconomy, setBiconomy] = useState(null);
 	const [loading, setLoading] = useState(false);
+	const [token, setToken] = useState(null);
 
 	const { address } = useAccount();
-	// const { data } = useSigner()
-	// const contract = useContract({
-	//   address: CONTRACT_ADDRESS,
-	//   abi: CONTRACT_ABI,
-	//   signerOrProvider: data
-	// })
-
-	// console.log(contract)
 
 	const initBiconomy = async (ethereum) => {
 		const biconomy = new Biconomy(ethereum, {
@@ -37,7 +30,7 @@ function App() {
 		}
 	}, []);
 
-	console.log("BICONOMY ", biconomy);
+	// console.log("BICONOMY ", biconomy);
 
 	const mintNft = async () => {
 		setLoading(true);
@@ -49,7 +42,7 @@ function App() {
 					CONTRACT_ABI,
 					biconomy.ethersProvider
 				);
-          console.log("CONTRACT ", contractInstance)
+				//   console.log("CONTRACT ", contractInstance)
 				const { data } = await contractInstance.populateTransaction.safeMint(
 					address
 				);
@@ -61,14 +54,19 @@ function App() {
 				};
 
 				let txHash = await provider.send("eth_sendTransaction", [txParams]);
-				console.log("Tx hash ", txHash);
-				biconomy.on("txHashGenerated", (data) => {
-					console.log(data);
-					console.log(`tx hash ${data.hash}`);
-				});
+				console.log("Txn Hash ", txHash)
+				
 				biconomy.on("txMined", async (data) => {
 					console.log(data);
 					console.log(`tx mined ${data.hash}`);
+					let receipt = data?.receipt;
+					let logs = receipt?.logs;
+					let topics = logs[0]?.topics;
+					let bigToken = topics[topics?.length - 1];
+					let tokenId = ethers.BigNumber.from(bigToken.toString());
+					console.log(tokenId.toString());
+					setToken(tokenId.toString());
+					setLoading(false);
 				});
 			}
 			// const mint = await contract.safeMint(address)
@@ -77,7 +75,6 @@ function App() {
 		} catch (error) {
 			console.log(error);
 		}
-		setLoading(false);
 	};
 
 	return (
@@ -96,6 +93,16 @@ function App() {
 							Mint
 						</button>
 					)
+				)}
+				{token && (
+					<a
+						href={`https://testnets.opensea.io/assets/mumbai/${CONTRACT_ADDRESS}/${token}`}
+						target="_blank"
+						rel="noreferrer"
+						className="text-lg font-bold text-gray-400"
+					>
+						Checkout on Opensea
+					</a>
 				)}
 			</div>
 		</div>
