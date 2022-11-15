@@ -1,6 +1,6 @@
-export const CONTRACT_ADDRESS="0xD5a84d3a3181d219A54895a7729Aeee4b1CBe625"
+const CONTRACT_ADDRESS="0xD5a84d3a3181d219A54895a7729Aeee4b1CBe625"
 
-export const CONTRACT_ABI = [
+const CONTRACT_ABI = [
 	{
 		"inputs": [
 			{
@@ -570,3 +570,8 @@ export const CONTRACT_ABI = [
 		"type": "function"
 	}
 ]
+
+module.exports = {
+    CONTRACT_ADDRESS,
+    CONTRACT_ABI
+}
