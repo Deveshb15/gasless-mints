@@ -1,4 +1,4 @@
-export const CONTRACT_ADDRESS="0xf6A87758585900a742328e8318208b6a95105A45"
+export const CONTRACT_ADDRESS="0x85Bf6861ADf30083b58c80627b78F056B45F0BE1"
 
 export const CONTRACT_ABI = [
 	{
@@ -16,17 +16,6 @@ export const CONTRACT_ABI = [
 		],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "operator",
-				"type": "address"
-			}
-		],
-		"name": "OperatorNotAllowed",
-		"type": "error"
 	},
 	{
 		"anonymous": false,
